@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: validateowap
+  main:
+    web-application-type: reactive

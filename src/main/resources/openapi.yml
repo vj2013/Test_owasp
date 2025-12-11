@@ -1,0 +1,863 @@
+openapi: 3.0.3
+info:
+  version: "1.0.0"
+  title: API Ficha Sanitaria
+  description: API para la consulta de fichas sanitarias
+servers:
+  - url: http://localhost:8095/cp2/fichasanitaria-query
+    description: Generated server url
+tags:
+  - name: FICHA SANITARIA
+    description: Listado de fichas sanitarias
+  - name: DOCUMENTO
+    description: Listado de documentos
+paths:
+  /documentos:
+    get:
+      tags:
+        - DOCUMENTO
+      summary: Obtiene el documento
+      description: Permite obtener el documento
+      operationId: obtenerDocumento
+      parameters:
+        - $ref: "#/components/parameters/IdPerfilHeader"
+        - $ref: "#/components/parameters/UserHeader"
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - in: query
+          name: queryParams
+          required: true
+          schema:
+            $ref: "#/components/schemas/GetDocumentoQueryParamsDto"
+      responses:
+        "200":
+          description: Búsqueda Exitosa.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseDocumentoDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+        "500":
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+  /inspeccion-sanitaria/escala/{escalaId}:
+    get:
+      tags:
+        - FICHA SANITARIA
+      summary: Obtiene fichas las fichas sanitarias por escala
+      description: Permite obtener las fichas SANITARIAS por escala
+      operationId: listarFichaSanitariaPorEscala
+      parameters:
+        - $ref: "#/components/parameters/IdPerfilHeader"
+        - $ref: "#/components/parameters/UserHeader"
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - in: path
+          name: escalaId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Búsqueda Exitosa.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseInspeccionSanitariaDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+        "500":
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+  /inspeccion-sanitaria:
+    get:
+      tags:
+        - FICHA SANITARIA
+      summary: Obtiene fichas las fichas sanitarias paginadas
+      description: Permite obtener las fichas SANITARIAS agrupadas de 25, 50  o 100 registros por página
+      operationId: listarFichaSanitariaPaginada
+      parameters:
+        - $ref: "#/components/parameters/IdPerfilHeader"
+        - $ref: "#/components/parameters/UserHeader"
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - in: query
+          name: queryParams
+          required: false
+          schema:
+            $ref: "#/components/schemas/GetInspeccionSanitariaQueryParamsDto"
+      responses:
+        "200":
+          description: Búsqueda Exitosa.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseInspeccionSanitariaDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+        "500":
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+        default:
+          description: Default Object
+  /inspeccion-sanitaria/{inspeccionSanitariaId}:
+    get:
+      tags:
+        - FICHA SANITARIA
+      summary: Obtiene la ficha sanitaria por ID
+      description: Permite obtener la ficha SANITARIA por ID
+      operationId: obtenerFichaSanitariaPorId
+      parameters:
+        - $ref: "#/components/parameters/IdPerfilHeader"
+        - $ref: "#/components/parameters/UserHeader"
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - in: path
+          name: inspeccionSanitariaId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Búsqueda Exitosa.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseInspeccionSanitariaDetalleDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+        "500":
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+  /perfiles/cp:
+    get:
+      tags:
+        - PERFIL
+      summary: Obtiene perfiles por puerto y rol
+      description: Permite obtener los perfiles de inspectores sanitarios por puerto, rol y RUC
+      operationId: obtenerPerfilesPorPuertoYRol
+      parameters:
+        - $ref: "#/components/parameters/IdPerfilHeader"
+        - $ref: "#/components/parameters/UserHeader"
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - in: query
+          name: codigoPuerto
+          required: true
+          schema:
+            type: string
+          description: Código del puerto
+        - in: query
+          name: codRol
+          required: true
+          schema:
+            type: string
+          description: Código del rol del inspector
+        - in: query
+          name: ruc
+          required: true
+          schema:
+            type: string
+          description: RUC de la empresa
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PerfilResponseWrapper"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+
+  /inspeccion-sanitaria/existe/{escalaId}:
+    get:
+      tags:
+        - FICHA SANITARIA
+      summary: Verifica si existe ficha sanitaria por escala
+      description: Retorna true si existe al menos una ficha sanitaria activa con conclusión y fecha inspección para la escala
+      operationId: existeFichaSanitariaPorEscala
+      parameters:
+        - $ref: "#/components/parameters/IdPerfilHeader"
+        - $ref: "#/components/parameters/UserHeader"
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - in: path
+          name: escalaId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resultado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  existe:
+                    type: boolean
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+        "500":
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCpGeneric"
+
+components:
+  parameters:
+    IdPerfilHeader:
+      name: idPerfil
+      in: header
+      required: true
+      schema:
+        type: number
+      description: ID del perfil del usuario
+    UserHeader:
+      name: user
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Usuario actual
+    AuthorizationHeader:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Token de autorización JWT
+    NombreNave:
+      name: nombreNave
+      in: query
+      required: false
+      schema:
+        type: string
+    Imo:
+      name: imo
+      in: query
+      required: false
+      schema:
+        type: string
+    Matricula:
+      name: matricula
+      in: query
+      required: false
+      schema:
+        type: string
+    InspectorId:
+      name: inspectorId
+      in: query
+      required: false
+      schema:
+        type: integer
+    ProgramDia:
+      name: programDia
+      in: query
+      required: false
+      schema:
+        type: boolean
+    Etapa:
+      name: etapa
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    EstadoId:
+      name: estadoId
+      in: query
+      required: false
+      schema:
+        type: integer
+    EtaInicio:
+      name: etaInicio
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    EtaFinal:
+      name: etaFinal
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    EtdInicio:
+      name: etdInicio
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    EtdFinal:
+      name: etdFinal
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    PuertoEscalaId:
+      name: puertoEscalaId
+      in: query
+      required: false
+      schema:
+        type: string
+    AnnoEscala:
+      name: annoEscala
+      in: query
+      required: false
+      schema:
+        type: integer
+    NumeroEscala:
+      name: numeroEscala
+      in: query
+      required: false
+      schema:
+        type: integer
+    NumberPage:
+      name: page
+      in: query
+      required: true
+      schema:
+        type: integer
+    SizePage:
+      name: size
+      in: query
+      required: true
+      schema:
+        type: integer
+  schemas:
+    ApiResponseCpGeneric:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/ApiResponseMetadata"
+        data:
+          type: array
+          items:
+            type: object # This can be overridden by specific schemas
+
+    ApiResponseMetadata:
+      type: object
+      properties:
+        result:
+          type: string
+        mensajes:
+          type: array
+          items:
+            $ref: "#/components/schemas/MetadataMessage"
+          default: []
+        cantidadRegistros:
+          type: integer
+          default: 0
+        cantidadRegistrosTotal:
+          type: integer
+          nullable: true
+        atributos:
+          type: object
+          additionalProperties:
+            type: string
+          description: Atributos adicionales de la respuesta
+
+    MetadataMessage:
+      title: MetadataMessage
+      type: object
+      properties:
+        codigo:
+          type: string
+          description: Codigo de error de Sistema
+        tipo:
+          type: string
+          description: Tipo de Error de Sistema
+        mensaje:
+          type: string
+          description: Descripcion del error de Sistema
+        parametrosDeMensaje:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Parametros del mensaje de error
+
+    ApiResponseDocumentoDto:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseCpGeneric"
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/DocumentoDto"
+
+    DocumentoDto:
+      type: object
+      properties:
+        filename:
+          type: string
+          description: Nombre del archivo
+        contentType:
+          type: string
+          description: Tipo de contenido del archivo
+        content:
+          type: string
+          example: "VGhpcyBpcyBhbiBleGFtcGxlIGJhc2U2NCBzdHJpbmc="
+          description: Contenido del archivo en Base64
+
+    GetInspeccionSanitariaQueryParamsDto:
+      type: object
+      properties:
+        nombreNave:
+          type: string
+        imo:
+          type: string
+        matricula:
+          type: string
+        inspectorId:
+          type: integer
+        programDia:
+          type: boolean
+        etapa:
+          type: array
+          items:
+            type: string
+        estadoId:
+          type: integer
+        etaInicio:
+          type: string
+          example: "2021-01-01"
+          pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+          description: "Date in the format YYYY-MM-DD"
+        etaFinal:
+          type: string
+          pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+          example: "2021-01-01"
+          description: "Date in the format YYYY-MM-DD"
+        etdInicio:
+          type: string
+          pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+          example: "2021-01-01"
+          description: "Date in the format YYYY-MM-DD"
+        etdFinal:
+          type: string
+          pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+          example: "2021-01-01"
+          description: "Date in the format YYYY-MM-DD"
+        puertoEscalaId:
+          type: string
+        annoEscala:
+          type: integer
+        numeroEscala:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer
+
+    InspeccionSanitariaListDto:
+      type: object
+      properties:
+        inspeccionSanitariaId:
+          type: integer
+        escala:
+          $ref: "#/components/schemas/EscalaListDto"
+        tipoInspSanId:
+          $ref: "#/components/schemas/TipoInspecionSanitariaDto"
+        etapa:
+          type: string
+        inspectorSanitario:
+          $ref: "#/components/schemas/InspectorSanitarioDto"
+        fecInspeccion:
+          type: string
+          format: date-time
+        estadoInspeccionId:
+          $ref: "#/components/schemas/EstadoInspeccionDto"
+        conclusion:
+          type: string
+        inspectorPerfilId:
+          type: integer
+        inspectorNombre:
+          type: string
+        muelleInspeccionId:
+          type: integer
+    InspeccionSanitariaDto:
+      type: object
+      properties:
+        inspeccionSanitariaId:
+          type: integer
+        escala:
+          $ref: "#/components/schemas/EscalaDto"
+        fichaNro:
+          type: string
+        tipoInspSanId:
+          $ref: "#/components/schemas/TipoInspecionSanitariaDto"
+        etapa:
+          type: string
+        inspectorSanitario:
+          $ref: "#/components/schemas/InspectorSanitarioDto"
+        fecInspeccion:
+          type: string
+          format: date-time
+        lugarInspeccion:
+          type: string
+        estadoInspeccionId:
+          $ref: "#/components/schemas/EstadoInspeccionDto"
+        estado:
+          type: string
+        capitan:
+          $ref: "#/components/schemas/PersonaDto"
+        horaIni:
+          type: string
+          format: time
+        horaFin:
+          type: string
+          format: time
+        numeroCabos:
+          type: integer
+        numeroProtectores:
+          type: integer
+        indAntiRatas:
+          type: boolean
+        certExencion:
+          type: string
+        certControl:
+          type: string
+        conclusion:
+          type: string
+        indDesratizacion:
+          type: boolean
+        indDesinsectacion:
+          type: boolean
+        indDesinfeccion:
+          type: boolean
+        indMedidaControl:
+          type: boolean
+        indDescontaminacion:
+          type: boolean
+        zonaCuarentena:
+          type: string
+        antecedentes:
+          type: string
+        filenetGuid:
+          type: string
+        inspectorPerfilId:
+          type: integer
+        inspectorNombre:
+          type: string
+        muelleInspeccionId:
+          type: integer
+    ApiResponseInspeccionSanitariaDto:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseCpGeneric"
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/InspeccionSanitariaListDto"
+    ApiResponseInspeccionSanitariaDetalleDto:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseCpGeneric"
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/InspeccionSanitariaDto"
+    EscalaListDto:
+      type: object
+      properties:
+        escalaId:
+          type: integer
+        fichaTecnicaDetIn:
+          $ref: "#/components/schemas/FichaTecnicaDetDto"
+        puertoEscalaId:
+          type: string
+        annoEscala:
+          type: integer
+        numeroEscala:
+          type: integer
+        eta:
+          type: string
+          format: date-time
+        etd:
+          type: string
+          format: date-time
+        instalacionAtraqueId:
+          $ref: "#/components/schemas/TerminalDto"
+    EscalaDto:
+      type: object
+      properties:
+        escalaId:
+          type: integer
+        fichaTecnicaDetIn:
+          $ref: "#/components/schemas/FichaTecnicaDetDto"
+        puertoEscala:
+          $ref: "#/components/schemas/PuertoNacionalDto"
+        puertoEscalaId:
+          type: string
+        annoEscala:
+          type: integer
+        numeroEscala:
+          type: integer
+        agencia:
+          $ref: "#/components/schemas/AgenciaDto"
+        eta:
+          type: string
+          format: date-time
+        etd:
+          type: string
+          format: date-time
+        puertoOrigen:
+          $ref: "#/components/schemas/PuertoDto"
+        puertoDestino:
+          $ref: "#/components/schemas/PuertoDto"
+        instalacionAtraqueId:
+          $ref: "#/components/schemas/TerminalDto"
+        estadoDue:
+          $ref: "#/components/schemas/EstadoDueDto"
+        fechaLibrePlatica:
+          type: string
+          format: date-time
+        document:
+          type: string
+        documentInstance:
+          type: string
+
+    FichaTecnicaDetDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        fichaTecnica:
+          $ref: "#/components/schemas/FichaTecnicaDto"
+        estadoVersionFt:
+          type: integer
+        naviera:
+          $ref: "#/components/schemas/NavieraDto"
+        puerto:
+          $ref: "#/components/schemas/PuertoDto"
+        nombreNave:
+          type: string
+        callSign:
+          type: string
+        pais:
+          $ref: "#/components/schemas/PaisDto"
+        tipoNave:
+          $ref: "#/components/schemas/TipoNaveDto"
+
+    AgenciaDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        rucAgencia:
+          type: string
+        razonSocialAgencia:
+          type: string
+        tipo:
+          type: string
+        estado:
+          type: string
+    NavieraDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        descNaviera:
+          type: string
+        estadoNaviera:
+          type: string
+        pais:
+          $ref: "#/components/schemas/PaisDto"
+        ruc:
+          type: string
+
+    PuertoDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombrePuerto:
+          type: string
+        codPais:
+          type: string
+        pais:
+          $ref: "#/components/schemas/PaisDto"
+    PuertoNacionalDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        codPuertoNacional:
+          type: string
+        tipoServicio:
+          type: string
+        departamento:
+          type: string
+        estado:
+          type: string
+        puertoId:
+          $ref: "#/components/schemas/PuertoDto"
+    TerminalDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombreTerminal:
+          type: string
+    EstadoDueDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        descEstado:
+          type: string
+    PaisDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        isoAlfa2:
+          type: string
+        nombrePaisEsp:
+          type: string
+        nombrePaisEng:
+          type: string
+        nacionalidad:
+          type: string
+        imagen:
+          type: string
+    FichaTecnicaDto:
+      type: object
+      properties:
+        fichaTecnicaId:
+          type: integer
+        imo:
+          type: string
+        matricula:
+          type: string
+    TipoInspecionSanitariaDto:
+      type: object
+      properties:
+        tipoInspSanitariaId:
+          type: integer
+        descTipoInspeccion:
+          type: string
+    InspectorSanitarioDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        codAduana:
+          type: string
+        nombreInspector:
+          type: string
+        estado:
+          type: string
+    EstadoInspeccionDto:
+      type: object
+      properties:
+        estadoInspeccionId:
+          type: integer
+        descEstado:
+          type: string
+        estado:
+          type: string
+    PersonaDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombrePersona:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: string
+    TipoNaveDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        codTipoNave:
+          type: string
+        nombreNaveEsp:
+          type: string
+        nombreNaveEng:
+          type: string
+        desAcronimo:
+          type: string
+
+    GetDocumentoQueryParamsDto:
+      title: GetDocumentoQueryParamsDto
+      type: object
+      properties:
+        ecmDocumentoId:
+          type: string
+          description: ID del documento en filenet
+
+    PerfilResponseWrapper:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/ApiResponseMetadata"
+        data:
+          $ref: "#/components/schemas/PerfilResponseData"
+
+    PerfilResponseData:
+      type: object
+      properties:
+        listaPerfiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/PerfilDto"
+
+    PerfilDto:
+      type: object
+      properties:
+        idPerfil:
+          type: integer
+        nombreCompleto:
+          type: string
+      required: [idPerfil, nombreCompleto]
