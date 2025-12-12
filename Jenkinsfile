@@ -9,7 +9,7 @@ pipeline {
     environment {
         DC_HOME = '/var/jenkins_home/tools/dependency-check/DC/dependency-check'
         PATH = "${env.DC_HOME}/bin:${env.PATH}"
-        NVD_API_KEY = credentials('NVD_API_KEY')
+//         NVD_API_KEY = credentials('NVD_API_KEY')
     }
 
     stages {
@@ -49,7 +49,7 @@ pipeline {
             }
 
             steps {
-                withCredentials([string(credentialsId: 'NVD_API_KEY_CREDENTIAL_ID', variable: 'NVD_KEY')]) {
+                withCredentials([string(credentialsId: 'NVD_API_KEY', variable: 'NVD_KEY')]) {
 
                 sh '''
                 # Ejecuta Dependency-Check desde la instalación manual
@@ -58,7 +58,7 @@ pipeline {
                     --scan . \
                     --format XML \
                     --out build/reports/dependency-check-report \
-                    --nvdApiKey $NVD_API_KEY
+                    --nvdApiKey $NVD_KEY
                     --failOnCVSS $FAILURE_THRESHOLD
                 '''
                 }
