@@ -33,6 +33,10 @@ dependencyManagement {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    // Forzar inclusión explícita de Reactor Netty en una versión parcheada para evitar JARs vulnerables anidados
+    implementation("io.projectreactor.netty:reactor-netty-core:1.2.12")
+    implementation("io.projectreactor.netty:reactor-netty-http:1.2.12")
 }
 
 configurations.all {
@@ -50,11 +54,16 @@ configurations.all {
         force("io.netty:netty-common:$nettyVersion")
         force("io.netty:netty-transport:$nettyVersion")
         // Agregar cualquier otro artefacto 'io.netty' que el escaneo siga reportando.
+
+        // --- Forzar Reactor Netty a una versión parcheada compatible ---
+        // Aseguramos que reactor-netty no arrastre versiones antiguas de Netty en artefactos anidados.
+        // Asumimos que la serie 1.2.x es compatible con Spring Boot 3.x; si tu BOM interna requiere
+        // otra versión, ajusta aquí. (Asunción: usamos 1.2.12 para fijar el parche.)
+        force("io.projectreactor.netty:reactor-netty-core:1.2.12")
+        force("io.projectreactor.netty:reactor-netty-http:1.2.12")
     }
 }
 
 tasks.getByName<Jar>("jar") {
     enabled = false
 }
-
-
