@@ -24,6 +24,12 @@ repositories {
     mavenCentral()
 }
 
+configurations.all {
+    resolutionStrategy {
+        force("io.projectreactor.netty:reactor-netty-http:1.2.12")
+    }
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 }
