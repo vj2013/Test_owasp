@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DC_HOME = '/var/jenkins_home/tools/dependency-check/DC/dependency-check-12.1.0-release'
+        DC_HOME = '/var/jenkins_home/tools/dependency-check/DC/dependency-check'
         PATH = "${env.DC_HOME}/bin:${env.PATH}"
     }
 
