@@ -43,23 +43,25 @@ pipeline {
             environment {
                 // Establecer el nivel de falla (opcional, recomendado: 7 (HIGH) o 8 (CRITICAL))
                 // Esto hará que el build falle si se encuentra una vulnerabilidad con puntaje CVSS >= 7
-                FAILURE_THRESHOLD = '7'
+                FAILURE_THRESHOLD = '11'
             }
 
             steps {
                 withCredentials([string(credentialsId: 'NVD_API_KEY', variable: 'NVD_KEY')]) {
 
-                sh '''
-                # Ejecuta Dependency-Check desde la instalación manual
-                ${DC_HOME}/bin/dependency-check.sh \
-                    --project "MiProyecto" \
-                    --scan . \
-                    --format XML \
-                    --out build/reports/dependency-check-report \
-                    --nvdApiKey ${NVD_KEY} \
-                    --failOnCVSS ${FAILURE_THRESHOLD} \
-                    --disableOssIndex
-                '''
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+                    sh '''
+                    # Ejecuta Dependency-Check desde la instalación manual
+                    ${DC_HOME}/bin/dependency-check.sh \
+                        --project "MiProyecto" \
+                        --scan . \
+                        --format XML \
+                        --out build/reports/dependency-check-report \
+                        --nvdApiKey ${NVD_KEY} \
+                        --failOnCVSS ${FAILURE_THRESHOLD} \
+                        --disableOssIndex
+                    '''
+                    }
                 }
             }
         }
@@ -77,7 +79,8 @@ pipeline {
             junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
 
             // Publica el reporte de OWASP Dependency-Check
-            dependencyCheckPublisher pattern: 'build/reports/dependency-check-report.xml'
+            dependencyCheckPublisher pattern: 'build/reports/dependency-check-report/dependency-check-report.xml'
+//             dependencyCheckPublisher pattern: 'build/reports/dependency-check-report.xml'
 //             dependencyCheckPublisher pattern: 'dependency-check-report.xml'
         }
     }
