@@ -23,7 +23,17 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-                dependencyCheck odcInstallation: 'DC'
+                script{
+                    dependencyCheck additionalArguments: '''
+                        -o "."
+                        -s "."
+                        -f "ALL"
+                        --prettyPrint
+                        --failOnCVSS 7.0
+                    ''',
+                    odcInstallation: 'DC'
+
+                }
             }
         }
 
