@@ -31,12 +31,10 @@ pipeline {
         stage('Verificar Conectividad NVD') {
             steps {
                 echo 'Verificando la conectividad saliente a la API de NVD...'
-                // Intentamos una conexión HTTP simple. Si la red está bloqueada,
-                // este comando fallará y abortará el pipeline antes de Dependency Check.
-                sh 'curl -s -o /dev/null -w "%{http_code}" https://services.nvd.nist.gov/rest/json/cves/2.0 | grep 200 || true'
-                // NOTA: Si su entorno es estricto, es posible que solo obtenga un 401 (no autorizado)
-                // lo cual también es una respuesta válida, ya que indica que la conexión funciona.
-                // Si el curl falla por red/DNS, el código de salida será distinto de 0.
+                sh '''
+                CODE=$(curl -s -o /dev/null -w "%{http_code}" https://services.nvd.nist.gov/rest/json/cves/2.0)
+                echo "HTTP CODE: $CODE"
+                '''
             }
         }
         // ------------------------------------
@@ -53,13 +51,13 @@ pipeline {
 
                 sh '''
                 # Ejecuta Dependency-Check desde la instalación manual
-                $DC_HOME/bin/dependency-check.sh \
+                ${DC_HOME}/bin/dependency-check.sh \
                     --project "MiProyecto" \
                     --scan . \
                     --format XML \
                     --out build/reports/dependency-check-report \
-                    --nvdApiKey $NVD_KEY
-                    --failOnCVSS $FAILURE_THRESHOLD
+                    --nvdApiKey ${NVD_KEY} \
+                    --failOnCVSS ${FAILURE_THRESHOLD} \
                     --disableOssIndex
                 '''
                 }
