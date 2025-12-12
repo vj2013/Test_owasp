@@ -23,6 +23,7 @@ configurations {
 repositories {
     mavenCentral()
 }
+extra["netty.version"] = "4.1.128.Final"
 
 configurations.all {
     resolutionStrategy {
@@ -33,6 +34,12 @@ configurations.all {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("io.projectreactor.netty:reactor-netty-http:1.2.12")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("io.netty:netty-bom:${property("netty.version")}")
+    }
 }
 
 tasks.getByName<Jar>("jar") {
