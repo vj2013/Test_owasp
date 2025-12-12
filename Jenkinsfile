@@ -28,25 +28,14 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-//                 /* script{
-//                     def dcHome = tool 'DC'
-//                     sh "chmod +x ${dcHome}/dependency-check"
-                    dependencyCheck additionalArguments: '''
-                        -o "."
-                        -s "."
-                        -f "ALL"
-                        --prettyPrint
-                        --failOnCVSS 7.0
-                    ''',
-                    odcInstallation: 'DC'
-
-//                 } */
-                sh """
-                    dependency-check.sh --project 'SpringBootApp' \
-                                        --scan . \
-                                        --format XML \
-                                        --out build/reports
-                    """
+                sh '''
+                # Ejecuta Dependency-Check desde la instalación manual
+                $DC_HOME/bin/dependency-check.sh \
+                    --project "MiProyecto" \
+                    --scan . \
+                    --format XML \
+                    --out build/reports/dependency-check-report
+                '''
             }
         }
 
@@ -63,8 +52,8 @@ pipeline {
             junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
 
             // Publica el reporte de OWASP Dependency-Check
-//             dependencyCheckPublisher pattern: 'build/reports/dependency-check-report.xml'
-            dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+            dependencyCheckPublisher pattern: 'build/reports/dependency-check-report.xml'
+//             dependencyCheckPublisher pattern: 'dependency-check-report.xml'
         }
     }
 }
