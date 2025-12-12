@@ -23,6 +23,7 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
+                sh './gradlew dependencyCheckAnalyze'
                 dependencyCheck additionalArguments: '',
                                 scanBuildArtifacts: true,
                                 suppressionFile: '',
