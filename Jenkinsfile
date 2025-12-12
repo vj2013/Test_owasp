@@ -23,11 +23,10 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-                dependencyCheckAnalyzer datadir: '',
-                    includes: '**/*.jar',
-                    isAutoupdateDisabled: false,
-                    outdir: 'dependency-check-report',
-                    scanpath: '.'
+                dependencyCheck additionalArguments: '',
+                                scanBuildArtifacts: true,
+                                suppressionFile: '',
+                                outdir: 'dependency-check-report'
             }
             post {
                 always {
