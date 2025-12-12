@@ -23,9 +23,9 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-                script{
-                    def dcHome = tool 'DC'
-                    sh "chmod +x ${dcHome}/dependency-check"
+//                 script{
+//                     def dcHome = tool 'DC'
+//                     sh "chmod +x ${dcHome}/dependency-check"
                     dependencyCheck additionalArguments: '''
                         -o "."
                         -s "."
@@ -35,7 +35,7 @@ pipeline {
                     ''',
                     odcInstallation: 'DC'
 
-                }
+//                 }
             }
         }
 
