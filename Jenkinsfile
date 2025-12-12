@@ -23,10 +23,7 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-                dependencyCheck odcInstallation: 'DC',
-                                    scanPath: '.',
-                                    additionalArguments: '',
-                                     stopBuild: false
+                dependencyCheck odcInstallation: 'DC'
             }
         }
 
