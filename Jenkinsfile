@@ -9,6 +9,7 @@ pipeline {
     environment {
         DC_HOME = '/var/jenkins_home/tools/dependency-check/DC/dependency-check'
         PATH = "${env.DC_HOME}/bin:${env.PATH}"
+        NVD_API_KEY = credentials('NVD_API_KEY')
     }
 
     stages {
@@ -34,7 +35,8 @@ pipeline {
                     --project "MiProyecto" \
                     --scan . \
                     --format XML \
-                    --out build/reports/dependency-check-report
+                    --out build/reports/dependency-check-report \
+                    --nvdApiKey $NVD_API_KEY
                 '''
             }
         }
