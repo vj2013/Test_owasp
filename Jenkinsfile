@@ -16,7 +16,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './gradlew clean build'
+                bat 'gradlew.bat clean build'
             }
         }
 
@@ -37,7 +37,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                sh './gradlew test'
+                bat 'gradlew.bat test'
             }
         }
 
