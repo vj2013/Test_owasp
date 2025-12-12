@@ -24,16 +24,9 @@ pipeline {
         stage('OWASP Dependency Check') {
             steps {
                 sh './gradlew dependencyCheckAnalyze'
-                dependencyCheck additionalArguments: '',
-                                scanBuildArtifacts: true,
-                                suppressionFile: '',
-                                outdir: 'dependency-check-report'
             }
-            post {
-                always {
-                    dependencyCheckPublisher pattern: 'dependency-check-report/dependency-check-report.xml'
-                }
-            }
+
+            dependencyCheckPublisher pattern: 'build/reports/dependency-check-report.xml'
         }
 
         stage('Tests') {
