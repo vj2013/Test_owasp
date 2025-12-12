@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script{
                     def dcHome = tool 'DC'
-                    sh "chmod +x ${dcHome}/bin/dependency-check.sh"
+                    sh "chmod +x ${dcHome}/dependency-check.sh"
                     dependencyCheck additionalArguments: '''
                         -o "."
                         -s "."
