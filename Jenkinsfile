@@ -6,6 +6,11 @@ pipeline {
         gradle 'gradle-8'
     }
 
+    environment {
+        DC_HOME = '/var/jenkins_home/tools/dependency-check/DC/dependency-check-12.1.0-release'
+        PATH = "${env.DC_HOME}/bin:${env.PATH}"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -23,7 +28,7 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-//                 script{
+//                 /* script{
 //                     def dcHome = tool 'DC'
 //                     sh "chmod +x ${dcHome}/dependency-check"
                     dependencyCheck additionalArguments: '''
@@ -35,7 +40,13 @@ pipeline {
                     ''',
                     odcInstallation: 'DC'
 
-//                 }
+//                 } */
+                sh """
+                    dependency-check.sh --project 'SpringBootApp' \
+                                        --scan . \
+                                        --format XML \
+                                        --out build/reports
+                    """
             }
         }
 
