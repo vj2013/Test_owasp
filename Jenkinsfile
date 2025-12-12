@@ -23,10 +23,9 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-                sh './gradlew dependencyCheckAnalyze'
+                dependencyCheck additionalArguments: '',
+                                     stopBuild: false
             }
-
-            dependencyCheckPublisher pattern: 'build/reports/dependency-check-report.xml'
         }
 
         stage('Tests') {
@@ -40,6 +39,9 @@ pipeline {
     post {
         always {
             junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
+
+            // Publica el reporte de OWASP Dependency-Check
+            dependencyCheckPublisher pattern: 'build/reports/dependency-check-report.xml'
         }
     }
 }
