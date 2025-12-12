@@ -32,6 +32,7 @@ configurations.all {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("io.projectreactor.netty:reactor-netty-http:1.2.12")
 }
 
 tasks.getByName<Jar>("jar") {
