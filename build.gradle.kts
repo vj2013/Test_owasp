@@ -25,9 +25,9 @@ repositories {
 }
 extra["netty.version"] = "4.1.128.Final"
 
-configurations.all {
-    resolutionStrategy {
-        force("io.projectreactor.netty:reactor-netty-http:1.2.12")
+dependencyManagement {
+    imports {
+        mavenBom("io.netty:netty-bom:${property("netty.version")}")
     }
 }
 
@@ -35,23 +35,21 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("io.netty:netty-bom:${property("netty.version")}")
-    }
-}
-
 configurations.all {
     resolutionStrategy {
-        // Asegúrate de usar la versión correcta de Netty que contiene los arreglos
+        // **IMPORTANTE:** Eliminar cualquier 'force' anterior para reactor-netty-http
+        // y asegurar que los componentes base de Netty se fuerzan a la versión del BOM.
+
         val nettyVersion = property("netty.version") as String
 
-        // Forzar las dependencias base de Netty a la versión del BOM
-        // Estos son los componentes base que tienen las vulnerabilidades reportadas
-        force("io.netty:netty-codec-http:$nettyVersion")
+        // 3. Estrategia de Forzado: Forzar explícitamente los componentes de Netty
+        // a la versión definida, lo que anulará cualquier versión antigua.
+        force("io.netty:netty-codec-http:$nettyVersion") // Corrige CVE-2019-20444 y otros.
         force("io.netty:netty-handler:$nettyVersion")
         force("io.netty:netty-buffer:$nettyVersion")
-        // ... otras librerías de Netty si el escaneo las sigue reportando
+        force("io.netty:netty-common:$nettyVersion")
+        force("io.netty:netty-transport:$nettyVersion")
+        // Agregar cualquier otro artefacto 'io.netty' que el escaneo siga reportando.
     }
 }
 
