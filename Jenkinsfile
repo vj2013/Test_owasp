@@ -59,7 +59,7 @@ pipeline {
                         --out build/reports/dependency-check-report \
                         --nvdApiKey ${NVD_KEY} \
                         --failOnCVSS ${FAILURE_THRESHOLD} \
-                        --disableOssIndex
+                        --disableOssIndex \
                         --suppression dependency-check-suppressions.xml
                     '''
                     }
