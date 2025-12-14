@@ -60,6 +60,7 @@ pipeline {
                         --nvdApiKey ${NVD_KEY} \
                         --failOnCVSS ${FAILURE_THRESHOLD} \
                         --disableOssIndex
+                        --suppression dependency-check-suppressions.xml
                     '''
                     }
                 }
@@ -79,7 +80,8 @@ pipeline {
             junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
 
             // Publica el reporte de OWASP Dependency-Check
-            dependencyCheckPublisher pattern: 'build/reports/dependency-check-report/dependency-check-report.xml'
+            dependencyCheckPublisher pattern: 'build/reports/dependency-check/dependency-check-report.xml'
+//             dependencyCheckPublisher pattern: 'build/reports/dependency-check-report/dependency-check-report.xml'
 //             dependencyCheckPublisher pattern: 'build/reports/dependency-check-report.xml'
 //             dependencyCheckPublisher pattern: 'dependency-check-report.xml'
         }

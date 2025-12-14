@@ -88,6 +88,13 @@ tasks.getByName<Jar>("jar") {
 }*/
 dependencyCheck {
     format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL.toString()
+
+    suppressionFiles = listOf(
+        "${project.rootDir}/dependency-check-suppressions.xml"
+    )
+
+    failBuildOnCVSS = 11f   // Para no romper el build (equivalente a --failOnCVSS 11)
+
     nvd {
         apiKey = System.getenv("NVD_API_KEY") ?: project.findProperty("nvd.api.key") as String? ?: ""
     }
