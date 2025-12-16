@@ -2,15 +2,10 @@ plugins {
     java
     id("org.springframework.boot") version "3.5.7"
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.owasp.dependencycheck") version "12.1.6"
 }
 
-allprojects {
-    apply(plugin = "org.owasp.dependencycheck")
-}
-
-group = "pe.gob.vuce.cp.sp.sample.experience"
-version = "1.0.0"
+group = "vuce.cp"
+version = "0.0.1-SNAPSHOT"
 
 java {
     toolchain {
@@ -26,30 +21,55 @@ configurations {
 
 repositories {
     mavenCentral()
-
+    maven {
+        url = uri(project.findProperty("jfrog.repository.url") as String? ?: "http://packages.atlassian.com/maven/repository/public")
+        isAllowInsecureProtocol = true
+        credentials(HttpHeaderCredentials::class) {
+            name = "X-JFrog-Art-Api"
+            value = project.findProperty("jfrog.api.key") as String? ?: ""
+        }
+        authentication {
+            create<HttpHeaderAuthentication>("header")
+        }
+    }
 }
 
 extra["springCloudVersion"] = "2025.0.0"
-extra["netty.version"] = "4.1.128.Final"
-val projectreactorNettyVersion = "1.2.11"
+val fwkSecurity = "2.0.0"
+val swaggerParserVersion = "2.1.34"
+val swaggerModelsVersion = "2.2.34"
+val swaggerAnnotationsVersion = "2.2.34"
+val swaggerIntegrationVersion = "2.2.34"
 
 dependencies {
 
 
     implementation("org.springframework.boot:spring-boot-starter-webflux"){
-//        exclude(group = "io.netty")
-        /*        exclude(group = "io.projectreactor.netty", module = "reactor-netty-http")
-                exclude(group = "io.projectreactor.netty", module = "reactor-netty-core")*/
     }
 
     implementation("org.springframework.cloud:spring-cloud-gateway-server-webflux"){
         exclude(group = "io.projectreactor.netty", module = "reactor-netty-core")
         exclude(group = "io.projectreactor.netty", module = "reactor-netty-http")
     }
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     implementation("org.springframework.security:spring-security-config"){
         exclude(group = "org.springframework.security", module = "spring-security-core")
     }
+    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-security:${fwkSecurity}")
+
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
+
+    // OpenAPI/Swagger dependencies
+    implementation("io.swagger.parser.v3:swagger-parser:${swaggerParserVersion}")
+    implementation("io.swagger.core.v3:swagger-models:${swaggerModelsVersion}")
+    implementation("io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}")
+    implementation("io.swagger.core.v3:swagger-integration:${swaggerIntegrationVersion}")
+
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+
     runtimeOnly("org.springframework.cloud:spring-cloud-starter-loadbalancer"){
         exclude(group = "io.projectreactor.netty", module = "reactor-netty-core")
         exclude(group = "io.projectreactor.netty", module = "reactor-netty-http")
@@ -63,39 +83,9 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-        mavenBom("io.netty:netty-bom:${property("netty.version")}")
     }
-    /*    dependencies {
-            dependency("io.projectreactor.netty:reactor-netty-http:${projectreactorNettyVersion}")
-            dependency("io.projectreactor.netty:reactor-netty-core:${projectreactorNettyVersion}")
-        }*/
 }
-
 
 tasks.getByName<Jar>("jar") {
     enabled = false
-}
-
-/*configurations.all {
-    resolutionStrategy {
-        force(
-            "io.netty:netty-transport:${property("netty.version")}",
-            "io.netty:netty-codec-http:${property("netty.version")}",
-            "io.netty:netty-handler:${property("netty.version")}",
-            "io.netty:netty-resolver-dns:${property("netty.version")}"
-        )
-    }
-}*/
-dependencyCheck {
-    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL.toString()
-
-    suppressionFiles = listOf(
-        "${project.rootDir}/dependency-check-suppressions.xml"
-    )
-
-    failBuildOnCVSS = 11f   // Para no romper el build (equivalente a --failOnCVSS 11)
-
-    nvd {
-        apiKey = System.getenv("NVD_API_KEY") ?: project.findProperty("nvd.api.key") as String? ?: ""
-    }
 }
