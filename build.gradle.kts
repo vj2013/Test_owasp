@@ -19,21 +19,6 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        url = uri(project.findProperty("jfrog.repository.url") as String? ?: "http://packages.atlassian.com/maven/repository/public")
-        isAllowInsecureProtocol = true
-        credentials(HttpHeaderCredentials::class) {
-            name = "X-JFrog-Art-Api"
-            value = project.findProperty("jfrog.api.key") as String? ?: ""
-        }
-        authentication {
-            create<HttpHeaderAuthentication>("header")
-        }
-    }
-}
-
 extra["springCloudVersion"] = "2025.0.0"
 val fwkSecurity = "2.0.0"
 val swaggerParserVersion = "2.1.34"
