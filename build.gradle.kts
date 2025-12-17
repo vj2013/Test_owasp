@@ -21,11 +21,10 @@ configurations {
 
 repositories {
     mavenCentral()
-
 }
 
 extra["springCloudVersion"] = "2025.0.0"
-val fwkSecurity = "2.0.0"
+//val fwkSecurity = "2.0.0"
 
 dependencies {
 
@@ -37,7 +36,6 @@ dependencies {
         exclude(group = "io.projectreactor.netty", module = "reactor-netty-core")
         exclude(group = "io.projectreactor.netty", module = "reactor-netty-http")
     }
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     implementation("org.springframework.security:spring-security-config"){
         exclude(group = "org.springframework.security", module = "spring-security-core")
@@ -46,9 +44,6 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
 
     runtimeOnly("org.springframework.cloud:spring-cloud-starter-loadbalancer"){
         exclude(group = "io.projectreactor.netty", module = "reactor-netty-core")
