@@ -21,10 +21,6 @@ configurations {
 
 extra["springCloudVersion"] = "2025.0.0"
 val fwkSecurity = "2.0.0"
-val swaggerParserVersion = "2.1.34"
-val swaggerModelsVersion = "2.2.34"
-val swaggerAnnotationsVersion = "2.2.34"
-val swaggerIntegrationVersion = "2.2.34"
 
 dependencies {
 
@@ -45,12 +41,6 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
-
-    // OpenAPI/Swagger dependencies
-    implementation("io.swagger.parser.v3:swagger-parser:${swaggerParserVersion}")
-    implementation("io.swagger.core.v3:swagger-models:${swaggerModelsVersion}")
-    implementation("io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}")
-    implementation("io.swagger.core.v3:swagger-integration:${swaggerIntegrationVersion}")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

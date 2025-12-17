@@ -4,14 +4,6 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-# Gradle properties with secrets
-gradle.propertiesgit push origin main
-git reset --soft HEAD~1
-git reset HEAD gradle.properties
-git checkout -- gradle.properties
-git commit -m "Remove sensitive credentials from gradle.properties"
-gradle-local.properties
-
 ### IntelliJ IDEA ###
 .idea
 .idea/modules.xml
