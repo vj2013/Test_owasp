@@ -19,6 +19,11 @@ configurations {
     }
 }
 
+repositories {
+    mavenCentral()
+
+}
+
 extra["springCloudVersion"] = "2025.0.0"
 val fwkSecurity = "2.0.0"
 
