@@ -41,6 +41,9 @@ val jfreeChartVersion = "1.5.5"
 val globalLoggerVersion = "1.0.0"
 val kafkaClientVersion = "3.9.1"
 
+val fileuploadVersion = "1.6.0"
+val beanutilsVersion = "1.11.0"
+
 dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
@@ -68,6 +71,9 @@ dependencies {
     // Monitoring dependencies
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
+
+    implementation("commons-beanutils:commons-beanutils:${beanutilsVersion}")
+    implementation("commons-fileupload:commons-fileupload:${fileuploadVersion}")
 
     implementation("org.apache.kafka:kafka-clients:${kafkaClientVersion}")
 
