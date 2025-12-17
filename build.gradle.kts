@@ -60,7 +60,7 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion")
     implementation("org.webjars:swagger-ui:$swaggerUiVersion")
     implementation("org.jfree:jfreechart:$jfreeChartVersion")
-    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$globalLoggerVersion")
+//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$globalLoggerVersion")
     // Redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     //CB
