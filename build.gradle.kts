@@ -42,7 +42,7 @@ dependencies {
     implementation("org.springframework.security:spring-security-config"){
         exclude(group = "org.springframework.security", module = "spring-security-core")
     }
-    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-security:${fwkSecurity}")
+//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-security:${fwkSecurity}")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
