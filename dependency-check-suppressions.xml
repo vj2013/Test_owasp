@@ -28,5 +28,8 @@
         <cve>CVE-2025-25193</cve>
         <!-- MEDIUM - Falso positivo comprobado - Vulnerabilidad micrometer-registry-prometheus-1.15.5.jar -->
         <cve>CVE-2019-3826</cve>
+        <!-- MEDIUM - Falso positivo comprobado - Vulnerabilidad Jasper-reports -->
+        <cve>CVE-2025-10492</cve>
+
     </suppress>
 </suppressions>
