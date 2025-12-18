@@ -25,13 +25,13 @@ repositories {
 
 extra["springCloudVersion"] = "2025.0.0"
 val mapstructVersion = "1.5.5.Final"
+val openfeignVersion = "4.2.3"
 val openapiVersion = "2.8.14"
-val globalLoggerVersion = "1.0.0"
 val gsonVersion = "2.9.0"
 val itextpdfVersion = "5.5.12"
 val poiVersion = "5.2.3"
+val fileuploadVersion = "1.6.0"
 val junitVersion = "4.13.1"
-val openfeignVersion = "4.2.3"
 
 dependencies {
     //	Spring Boot Starters
@@ -55,9 +55,7 @@ dependencies {
     // Reportes / Archivos
     implementation("com.itextpdf:itextpdf:$itextpdfVersion");
     implementation("org.apache.poi:poi-ooxml:$poiVersion");
-
-    // Logging corporativo
-//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:${globalLoggerVersion}")
+    implementation("commons-fileupload:commons-fileupload:${fileuploadVersion}")
 
     // Base de datos
     runtimeOnly("org.postgresql:postgresql")
