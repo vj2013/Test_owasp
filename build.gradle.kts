@@ -57,7 +57,7 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:$poiVersion");
 
     // Logging corporativo
-    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:${globalLoggerVersion}")
+//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:${globalLoggerVersion}")
 
     // Base de datos
     runtimeOnly("org.postgresql:postgresql")

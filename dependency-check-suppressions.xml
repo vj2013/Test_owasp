@@ -1,37 +1,37 @@
-<!--
-<?xml version="1.0" encoding="UTF-8"?>
-<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-    <suppress>
-        &lt;!&ndash; CRITICAL - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 &ndash;&gt;
-        <cve>CVE-2019-20444</cve>
-        <cve>CVE-2019-20445</cve>
-        &lt;!&ndash; HIGH - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 &ndash;&gt;
-        <cve>CVE-2025-55163</cve>
-        <cve>CVE-2015-2156</cve>
-        <cve>CVE-2019-16869</cve>
-        <cve>CVE-2021-37136</cve>
-        <cve>CVE-2021-37137</cve>
-        <cve>CVE-2022-41881</cve>
-        <cve>CVE-2023-44487</cve>
-        <cve>CVE-2018-1258</cve>
-        &lt;!&ndash; MEDIUM - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 &ndash;&gt;
-        <cve>CVE-2025-58057</cve>
-        <cve>CVE-2021-43797</cve>
-        <cve>CVE-2023-34462</cve>
-        <cve>CVE-2021-21295</cve>
-        <cve>CVE-2021-21409</cve>
-        <cve>CVE-2021-21290</cve>
-        <cve>CVE-2022-24823</cve>
-        <cve>CVE-2024-47535</cve>
-        <cve>CVE-2025-25193</cve>
-        <cve>CVE-2024-29025</cve>
-        <cve>CVE-2014-3488</cve>
-        <cve>CVE-2025-25193</cve>
-        &lt;!&ndash; MEDIUM - Falso positivo comprobado - Vulnerabilidad micrometer-registry-prometheus-1.15.5.jar &ndash;&gt;
-        <cve>CVE-2019-3826</cve>
-        &lt;!&ndash; MEDIUM - Falso positivo comprobado - Vulnerabilidad Jasper-reports &ndash;&gt;
-        <cve>CVE-2025-10492</cve>
+<!--&lt;!&ndash;-->
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">-->
+<!--    <suppress>-->
+<!--        &lt;!&ndash; CRITICAL - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 &ndash;&gt;-->
+<!--        <cve>CVE-2019-20444</cve>-->
+<!--        <cve>CVE-2019-20445</cve>-->
+<!--        &lt;!&ndash; HIGH - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 &ndash;&gt;-->
+<!--        <cve>CVE-2025-55163</cve>-->
+<!--        <cve>CVE-2015-2156</cve>-->
+<!--        <cve>CVE-2019-16869</cve>-->
+<!--        <cve>CVE-2021-37136</cve>-->
+<!--        <cve>CVE-2021-37137</cve>-->
+<!--        <cve>CVE-2022-41881</cve>-->
+<!--        <cve>CVE-2023-44487</cve>-->
+<!--        <cve>CVE-2018-1258</cve>-->
+<!--        &lt;!&ndash; MEDIUM - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 &ndash;&gt;-->
+<!--        <cve>CVE-2025-58057</cve>-->
+<!--        <cve>CVE-2021-43797</cve>-->
+<!--        <cve>CVE-2023-34462</cve>-->
+<!--        <cve>CVE-2021-21295</cve>-->
+<!--        <cve>CVE-2021-21409</cve>-->
+<!--        <cve>CVE-2021-21290</cve>-->
+<!--        <cve>CVE-2022-24823</cve>-->
+<!--        <cve>CVE-2024-47535</cve>-->
+<!--        <cve>CVE-2025-25193</cve>-->
+<!--        <cve>CVE-2024-29025</cve>-->
+<!--        <cve>CVE-2014-3488</cve>-->
+<!--        <cve>CVE-2025-25193</cve>-->
+<!--        &lt;!&ndash; MEDIUM - Falso positivo comprobado - Vulnerabilidad micrometer-registry-prometheus-1.15.5.jar &ndash;&gt;-->
+<!--        <cve>CVE-2019-3826</cve>-->
+<!--        &lt;!&ndash; MEDIUM - Falso positivo comprobado - Vulnerabilidad Jasper-reports &ndash;&gt;-->
+<!--        <cve>CVE-2025-10492</cve>-->
 
-    </suppress>
-</suppressions>
--->
+<!--    </suppress>-->
+<!--</suppressions>-->
+<!--&ndash;&gt;-->
