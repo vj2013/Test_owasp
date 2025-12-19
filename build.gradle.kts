@@ -6,7 +6,7 @@ plugins {
     id("org.openapi.generator") version "7.3.0"
 }
 
-group = "vuce.cp"
+group = "pe.gob.vuce.cp.bs"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -19,49 +19,89 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 extra["springCloudVersion"] = "2025.0.0"
-var webmvcVersion = "2.5.0"
-var logbackVersion = "7.0.1"
-var mapstructVersion = "1.5.5.Final"
-var bcprovVersion = "1.79"
-var swaggerUiVersion = "5.18.0"
-var globalLoggerVersion="1.0.0"
-var commonsLangVersion="3.18.0"
+
+val mapstructVersion = "1.5.5.Final"
+val mapstructProcessVersion = "1.5.5.Final"
+val swaggerVersion = "2.2.22"
+val gsonVersion = "2.8.9"
+val sprintBootParent = "3.3.0"
+val mockitoCore = "3.12.4"
+val mockitoInline = "5.0.0"
+val mockitoJunit = "3.12.4"
+val openApiWebMvcUiVersion = "2.5.0"
+val logstashLogbackEncoderVersion = "7.0.1"
+val poiVersion = "5.2.3"
+val jasperReportsVersion = "6.21.3"
+val bcprovVersion = "1.78"
+val swaggerUiVersion = "5.18.0"
+val jfreeChartVersion = "1.5.5"
+val nettyHandlerVersion = "4.1.127.Final"
+val global = "1.0.0"
+val tomcatVersion = "10.1.44"
+val fileuploadVersion = "1.6.0"
+val kafkaClientVersion = "3.9.1"
+val kafkaSpringVersion = "3.3.10"
+val okhttp3Version = "4.12.0"
+val okioVersion = "3.5.0"
+val beanutilsVersion = "1.11.0"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    // Spring Boot starters
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.mapstruct:mapstruct:$mapstructVersion")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$webmvcVersion") {
-        exclude(group = "org.apache.commons", module = "commons-lang3")
-    }
-    implementation("org.apache.commons:commons-lang3:${commonsLangVersion}") // Force secure version (CVE-2025-48924)
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // Spring cloud
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-    implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
-    implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion") // Updated to 1.79 (CVE-2025-8916)
+
+    // Redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    // Kafka dependencies (managed by Spring Boot BOM)
+    implementation("org.springframework.kafka:spring-kafka")
+
+    // OpenAPI / Swagger
+    implementation("com.google.code.gson:gson:$gsonVersion")
+    implementation("io.swagger.core.v3:swagger-annotations:$swaggerVersion")
+    implementation("org.mapstruct:mapstruct:$mapstructVersion")
+//    implementation("org.springframework.boot:spring-boot-starter-parent:$sprintBootParent")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiWebMvcUiVersion")
+//    implementation("net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion")
     implementation("org.webjars:swagger-ui:$swaggerUiVersion")
-//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:${globalLoggerVersion}")
+    implementation("org.jfree:jfreechart:$jfreeChartVersion")
+    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$global")
+
+    implementation ("org.apache.poi:poi:$poiVersion")
+    implementation ("org.apache.poi:poi-ooxml:$poiVersion")
+    implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
+    implementation ("net.sf.jasperreports:jasperreports-fonts:$jasperReportsVersion")
+//    implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion")
 
     // Monitoring dependencies
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
 
-    // Kafka dependencies (managed by Spring Boot BOM)
-    implementation("org.springframework.kafka:spring-kafka")
+//    implementation("org.springframework.data:spring-data-redis")
+//    implementation("org.springframework.data:spring-data-commons")
 
-    annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
+    implementation("commons-fileupload:commons-fileupload:${fileuploadVersion}")
+
+
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructProcessVersion")
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.awaitility:awaitility")
+    testImplementation("org.mockito:mockito-core:$mockitoCore")
+    testImplementation("org.mockito:mockito-inline:$mockitoInline")
+    testImplementation("org.mockito:mockito-junit-jupiter:$mockitoJunit")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+
+
 }
 
 dependencyManagement {
@@ -75,18 +115,12 @@ tasks.withType<Test> {
     finalizedBy(tasks.jacocoTestReport)
 }
 
-tasks.getByName<Jar>("jar") { enabled = false }
-
-jacoco {
-    toolVersion = "0.8.12"
-}
-
 openApiGenerate {
     generatorName.set("spring")
     inputSpec.set("$projectDir/src/main/resources/openapi.yml")
     outputDir.set("${layout.buildDirectory.get().asFile}/generated/openapi")
-    apiPackage.set("pe.gob.vuce.cp.bs.fichasanitaria.query.api")
-    modelPackage.set("pe.gob.vuce.cp.bs.fichasanitaria.query.model")
+    apiPackage.set("pe.gob.vuce.cp.bs.consultaficha.query.api")
+    modelPackage.set("pe.gob.vuce.cp.bs.consultaficha.query.model")
     configOptions.set(mapOf(
         "addRequestHeadersToAPI" to "true",
         "useSpringBoot3" to "true",
@@ -100,7 +134,8 @@ openApiGenerate {
         "implicitHeaders" to "true",
         "openApiNullable" to "false",
         "oas3" to "true",
-        "reactivex" to "true"
+        "reactivex" to "true",
+        "suppressAllWarnings" to "false"
     ))
 }
 
@@ -110,16 +145,19 @@ tasks.named("processResources") {
 tasks.named("compileJava") {
     dependsOn(tasks.openApiGenerate)
 }
+tasks.named<Jar>("jar") {
+    enabled = false
+}
 
 java.sourceSets["main"].java {
     srcDir("${layout.buildDirectory.get().asFile}/generated/openapi/src/main/java")
 }
 
-val jacocoExclude = listOf(
-    "pe/gob/vuce/cp/bs/fichasanitaria/query/api/**",     // OpenAPI generated
-    "pe/gob/vuce/cp/bs/fichasanitaria/query/model/**"    // Models generated
-)
+jacoco {
+    toolVersion = "0.8.8"
+}
 
+val jacocoExclude = listOf("pe/gob/vuce/cp/bs/consultaficha/query/api/**", "pe/gob/vuce/cp/bs/consultaficha/query/model/**")
 tasks.withType<JacocoReport> {
     dependsOn(tasks.test)
 
