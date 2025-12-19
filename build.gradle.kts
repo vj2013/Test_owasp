@@ -26,41 +26,41 @@ repositories {
 extra["springCloudVersion"] = "2025.0.0"
 val mapstructVersion = "1.5.5.Final"
 val webmvcVersion = "2.5.0"
-val logbackVersion = "7.0.1"
-val springBootVersion = "3.3.0"
-val vuceCpFwkSecurityVersion = "1.0.0-SNAPSHOT"
+val commonsFileUploadVersion = "1.6.0"
 val swaggerUiVersion = "5.18.0"
-val bcprovVersion = "1.78"
 val globalLoggerVersion = "1.0.0"
-val tomcatVersion = "10.1.44"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.mapstruct:mapstruct:$mapstructVersion")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$webmvcVersion")
+
+    // Spring Cloud
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-    implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
+
+    // Api Documentation
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$webmvcVersion")
     implementation("org.webjars:swagger-ui:$swaggerUiVersion")
-    implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-//    implementation("org.springframework.boot:spring-boot-starter-parent:$springBootVersion")
-//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$globalLoggerVersion")
+
+    implementation("commons-fileupload:commons-fileupload:${commonsFileUploadVersion}")
+//    implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
+
+//    implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion")
+
+    // Internal Frameworks
+    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$globalLoggerVersion")
     // Monitoring dependencies
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
 
-    // Kafka dependencies (managed by Spring Boot BOM)
+    // Messaging - Kafka
     implementation("org.springframework.kafka:spring-kafka")
 
-    implementation("commons-fileupload:commons-fileupload:1.6.0")
-//    implementation("org.apache.kafka:kafka-clients:3.9.1")
-//    implementation("org.springframework.kafka:spring-kafka:3.3.10")
 
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
     runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
