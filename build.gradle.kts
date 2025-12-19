@@ -85,7 +85,7 @@ dependencies {
 //    implementation("net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion")
         implementation("org.webjars:swagger-ui:$swaggerUiVersion")
         implementation("org.jfree:jfreechart:$jfreeChartVersion")
-        implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$global")
+//        implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$global")
 
         implementation("org.apache.poi:poi:$poiVersion")
         implementation("org.apache.poi:poi-ooxml:$poiVersion")
@@ -190,4 +190,3 @@ dependencies {
             }))
         }
     }
-}
