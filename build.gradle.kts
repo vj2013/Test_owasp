@@ -49,7 +49,7 @@ dependencies {
 //    implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion")
 
     // Internal Frameworks
-    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$globalLoggerVersion")
+//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$globalLoggerVersion")
     // Monitoring dependencies
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
