@@ -19,6 +19,20 @@ configurations {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven {
+        url = uri(System.getenv("JFROG_URL") ?: "https://artifactory.example.com/artifactory/repo")
+        isAllowInsecureProtocol = true
+        credentials(HttpHeaderCredentials::class) {
+            name = "X-JFrog-Art-Api"
+            value = System.getenv("JFROG_API_KEY") ?: ""
+        }
+        authentication {
+            create<HttpHeaderAuthentication>("header")
+        }
+    }
+
 extra["springCloudVersion"] = "2025.0.0"
 
 val mapstructVersion = "1.5.5.Final"
