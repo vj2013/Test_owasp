@@ -24,48 +24,44 @@ repositories {
 }
 
 extra["springCloudVersion"] = "2025.0.0"
-val mapstructVersion = "1.5.5.Final"
-val webmvcVersion = "2.5.0"
-val commonsFileUploadVersion = "1.6.0"
-val swaggerUiVersion = "5.18.0"
-val globalLoggerVersion = "1.0.0"
+var webmvcVersion = "2.5.0"
+var logbackVersion = "7.0.1"
+var mapstructVersion = "1.5.5.Final"
+var bcprovVersion = "1.79"
+var swaggerUiVersion = "5.18.0"
+var globalLoggerVersion="1.0.0"
+var commonsLangVersion="3.18.0"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.mapstruct:mapstruct:$mapstructVersion")
-
-    // Spring Cloud
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$webmvcVersion") {
+        exclude(group = "org.apache.commons", module = "commons-lang3")
+    }
+    implementation("org.apache.commons:commons-lang3:${commonsLangVersion}") // Force secure version (CVE-2025-48924)
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-
-    // Api Documentation
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$webmvcVersion")
+    implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
+    implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion") // Updated to 1.79 (CVE-2025-8916)
     implementation("org.webjars:swagger-ui:$swaggerUiVersion")
+//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:${globalLoggerVersion}")
 
-    implementation("commons-fileupload:commons-fileupload:${commonsFileUploadVersion}")
-//    implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
-
-//    implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion")
-
-    // Internal Frameworks
-//    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$globalLoggerVersion")
     // Monitoring dependencies
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
 
-    // Messaging - Kafka
+    // Kafka dependencies (managed by Spring Boot BOM)
     implementation("org.springframework.kafka:spring-kafka")
 
-
-    compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
     runtimeOnly("org.postgresql:postgresql")
+    compileOnly("org.projectlombok:lombok")
 
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.awaitility:awaitility")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 dependencyManagement {
@@ -85,14 +81,12 @@ jacoco {
     toolVersion = "0.8.12"
 }
 
-
-
 openApiGenerate {
     generatorName.set("spring")
     inputSpec.set("$projectDir/src/main/resources/openapi.yml")
     outputDir.set("${layout.buildDirectory.get().asFile}/generated/openapi")
-    apiPackage.set("pe.gob.vuce.cp.bs.audittrail.query.api")
-    modelPackage.set("pe.gob.vuce.cp.bs.audittrail.query.model")
+    apiPackage.set("pe.gob.vuce.cp.bs.fichasanitaria.query.api")
+    modelPackage.set("pe.gob.vuce.cp.bs.fichasanitaria.query.model")
     configOptions.set(mapOf(
         "addRequestHeadersToAPI" to "true",
         "useSpringBoot3" to "true",
@@ -121,7 +115,10 @@ java.sourceSets["main"].java {
     srcDir("${layout.buildDirectory.get().asFile}/generated/openapi/src/main/java")
 }
 
-val jacocoExclude = listOf("pe/gob/vuce/cp/bs/audittrail/query/api/**", "pe/gob/vuce/cp/bs/audittrail/query/model/**")
+val jacocoExclude = listOf(
+    "pe/gob/vuce/cp/bs/fichasanitaria/query/api/**",     // OpenAPI generated
+    "pe/gob/vuce/cp/bs/fichasanitaria/query/model/**"    // Models generated
+)
 
 tasks.withType<JacocoReport> {
     dependsOn(tasks.test)
