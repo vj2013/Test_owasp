@@ -6,7 +6,7 @@ plugins {
     id("org.openapi.generator") version "7.3.0"
 }
 
-group = "pe.gob.vuce.cp.bs.arribozarpe.query"
+group = "vuce.cp"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -25,49 +25,46 @@ repositories {
 
 extra["springCloudVersion"] = "2025.0.0"
 val mapstructVersion = "1.5.5.Final"
-val openfeignVersion = "4.2.3"
-val openapiVersion = "2.8.14"
-val gsonVersion = "2.9.0"
-val itextpdfVersion = "5.5.12"
-val poiVersion = "5.2.3"
-val fileuploadVersion = "1.6.0"
-val junitVersion = "4.13.1"
+val webmvcVersion = "2.5.0"
+val logbackVersion = "7.0.1"
+val springBootVersion = "3.3.0"
+val vuceCpFwkSecurityVersion = "1.0.0-SNAPSHOT"
+val swaggerUiVersion = "5.18.0"
+val bcprovVersion = "1.78"
+val globalLoggerVersion = "1.0.0"
+val tomcatVersion = "10.1.44"
 
 dependencies {
-    //	Spring Boot Starters
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${openapiVersion}")
-
-    // Monitoring dependencies
-    implementation("io.micrometer:micrometer-registry-prometheus")
-
-    // Comunicación externa
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$openfeignVersion")
-    implementation("org.springframework.kafka:spring-kafka")
-
-    // Mapeo y utilitarios
-    implementation("org.mapstruct:mapstruct:$mapstructVersion")
-    implementation("com.google.code.gson:gson:$gsonVersion")
-
-    // Reportes / Archivos
-    implementation("com.itextpdf:itextpdf:$itextpdfVersion");
-    implementation("org.apache.poi:poi-ooxml:$poiVersion");
-    implementation("commons-fileupload:commons-fileupload:${fileuploadVersion}")
-
-    // Base de datos
-    runtimeOnly("org.postgresql:postgresql")
-
-    //	Lombok & MapStruct (compile-time)
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor ("org.mapstruct:mapstruct-processor:$mapstructVersion")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
+    implementation("org.mapstruct:mapstruct:$mapstructVersion")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$webmvcVersion")
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
+    implementation("org.webjars:swagger-ui:$swaggerUiVersion")
+    implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+//    implementation("org.springframework.boot:spring-boot-starter-parent:$springBootVersion")
+    implementation("pe.gob.vuce.cp.framework:vuce-cp-fwk-globallogger:$globalLoggerVersion")
+    // Monitoring dependencies
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
 
-    // Testing
+    // Kafka dependencies (managed by Spring Boot BOM)
+    implementation("org.springframework.kafka:spring-kafka")
+
+    implementation("commons-fileupload:commons-fileupload:1.6.0")
+//    implementation("org.apache.kafka:kafka-clients:3.9.1")
+//    implementation("org.springframework.kafka:spring-kafka:3.3.10")
+
+    runtimeOnly("org.postgresql:postgresql")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("junit:junit:$junitVersion")
+    testImplementation("org.awaitility:awaitility")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -76,12 +73,26 @@ dependencyManagement {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
     }
 }
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.getByName<Jar>("jar") { enabled = false }
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+
+
 openApiGenerate {
     generatorName.set("spring")
     inputSpec.set("$projectDir/src/main/resources/openapi.yml")
     outputDir.set("$buildDir/generated/openapi")
-    apiPackage.set("pe.gob.vuce.cp.bs.arribozarpe.query.contract.api")
-    modelPackage.set("pe.gob.vuce.cp.bs.arribozarpe.query.contract.model")
+    apiPackage.set("pe.gob.vuce.cp.bs.audittrail.query.api")
+    modelPackage.set("pe.gob.vuce.cp.bs.audittrail.query.model")
     configOptions.set(mapOf(
         "addRequestHeadersToAPI" to "true",
         "useSpringBoot3" to "true",
@@ -94,31 +105,24 @@ openApiGenerate {
         "useTags" to "true",
         "implicitHeaders" to "true",
         "openApiNullable" to "false",
-        "oas3" to "true"
+        "oas3" to "true",
+        "reactivex" to "true"
     ))
 }
-tasks.withType<Test> {
-    useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport)
-}
 
-tasks.named("processResources"){
+tasks.named("processResources") {
     dependsOn(tasks.openApiGenerate)
 }
-tasks.named("compileJava"){
+tasks.named("compileJava") {
     dependsOn(tasks.openApiGenerate)
 }
-tasks.getByName<Jar>("jar") { enabled = false }
 
 java.sourceSets["main"].java {
     srcDir("$buildDir/generated/openapi/src/main/java")
 }
 
-jacoco {
-    toolVersion = "0.8.7"
-}
+val jacocoExclude = listOf("pe/gob/vuce/cp/bs/audittrail/query/api/**", "pe/gob/vuce/cp/bs/audittrail/query/model/**")
 
-val jacocoExclude = listOf("**/build/**", "**/generated/**")
 tasks.withType<JacocoReport> {
     dependsOn(tasks.test)
 
