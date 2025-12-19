@@ -57,7 +57,7 @@ dependencies {
     // Kafka dependencies (managed by Spring Boot BOM)
     implementation("org.springframework.kafka:spring-kafka")
 
-//    implementation("commons-fileupload:commons-fileupload:1.6.0")
+    implementation("commons-fileupload:commons-fileupload:1.6.0")
 //    implementation("org.apache.kafka:kafka-clients:3.9.1")
 //    implementation("org.springframework.kafka:spring-kafka:3.3.10")
 

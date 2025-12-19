@@ -1,10 +1,8 @@
-<!--
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
     <suppress>
-        &lt;!&ndash; HIGH - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 [cripto]&ndash;&gt;
+        <!-- HIGH - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 [cripto]-->
         <cve>CVE-2018-1258</cve>
-        &lt;!&ndash; MEDIUM - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 &ndash;&gt;
+        <!-- MEDIUM - Falso positivo comprobado - Vulnerabilidad mitigada en Spring Boot 3.5.7 -->
     </suppress>
 </suppressions>
--->
