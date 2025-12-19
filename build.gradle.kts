@@ -31,6 +31,7 @@ var bcprovVersion = "1.79"
 var swaggerUiVersion = "5.18.0"
 var globalLoggerVersion="1.0.0"
 var commonsLangVersion="3.18.0"
+val fileuploadVersion = "1.6.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -42,6 +43,7 @@ dependencies {
     }
     implementation("org.apache.commons:commons-lang3:${commonsLangVersion}") // Force secure version (CVE-2025-48924)
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    implementation("commons-fileupload:commons-fileupload:${fileuploadVersion}")
     implementation("net.logstash.logback:logstash-logback-encoder:$logbackVersion")
     implementation("org.bouncycastle:bcprov-jdk18on:$bcprovVersion") // Updated to 1.79 (CVE-2025-8916)
     implementation("org.webjars:swagger-ui:$swaggerUiVersion")
