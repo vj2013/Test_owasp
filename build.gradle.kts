@@ -36,19 +36,19 @@ val mockitoJunit = "3.12.4"
 val openApiWebMvcUiVersion = "2.5.0"
 val logstashLogbackEncoderVersion = "7.0.1"
 val poiVersion = "5.2.3"
-val jasperReportsVersion = "6.21.3"
+val jasperReportsVersion = "7.0.3"
 val bcprovVersion = "1.78"
 val swaggerUiVersion = "5.18.0"
 val jfreeChartVersion = "1.5.5"
 val nettyHandlerVersion = "4.1.127.Final"
 val global = "1.0.0"
 val tomcatVersion = "10.1.44"
+val beanutilsVersion = "1.11.0"
 val fileuploadVersion = "1.6.0"
 val kafkaClientVersion = "3.9.1"
 val kafkaSpringVersion = "3.3.10"
 val okhttp3Version = "4.12.0"
 val okioVersion = "3.5.0"
-val beanutilsVersion = "1.11.0"
 
 dependencies {
 
@@ -89,6 +89,7 @@ dependencies {
 //    implementation("org.springframework.data:spring-data-redis")
 //    implementation("org.springframework.data:spring-data-commons")
 
+    implementation("commons-beanutils:commons-beanutils:${beanutilsVersion}")
     implementation("commons-fileupload:commons-fileupload:${fileuploadVersion}")
 
 
