@@ -57,7 +57,7 @@ dependencies {
     // Kafka dependencies (managed by Spring Boot BOM)
     implementation("org.springframework.kafka:spring-kafka")
 
-    implementation("commons-fileupload:commons-fileupload:1.6.0")
+//    implementation("commons-fileupload:commons-fileupload:1.6.0")
 //    implementation("org.apache.kafka:kafka-clients:3.9.1")
 //    implementation("org.springframework.kafka:spring-kafka:3.3.10")
 
@@ -90,7 +90,7 @@ jacoco {
 openApiGenerate {
     generatorName.set("spring")
     inputSpec.set("$projectDir/src/main/resources/openapi.yml")
-    outputDir.set("$buildDir/generated/openapi")
+    outputDir.set("${layout.buildDirectory.get().asFile}/generated/openapi")
     apiPackage.set("pe.gob.vuce.cp.bs.audittrail.query.api")
     modelPackage.set("pe.gob.vuce.cp.bs.audittrail.query.model")
     configOptions.set(mapOf(
@@ -118,7 +118,7 @@ tasks.named("compileJava") {
 }
 
 java.sourceSets["main"].java {
-    srcDir("$buildDir/generated/openapi/src/main/java")
+    srcDir("${layout.buildDirectory.get().asFile}/generated/openapi/src/main/java")
 }
 
 val jacocoExclude = listOf("pe/gob/vuce/cp/bs/audittrail/query/api/**", "pe/gob/vuce/cp/bs/audittrail/query/model/**")
